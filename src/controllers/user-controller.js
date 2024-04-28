@@ -163,6 +163,29 @@ const signIn = async (req, res) => {
     });
   }
 };
+const AuthenticatedMiddleware = async (req, res, next) => {
+  try {
+    const token = req.headers["x-access-token"];
+
+    const response = await userService.isAuthenticated(token);
+    console.log("====================================");
+    console.log(response);
+    console.log("====================================");
+    if (!response) throw error;
+    req.id = response.id;
+    next();
+  } catch (error) {
+    console.log("====================================");
+    console.log(error);
+    console.log("====================================");
+    return res.status(500).json({
+      success: false,
+      data: [],
+      message: "Something went wrong",
+      err: error,
+    });
+  }
+};
 const isAuthenticated = async (req, res) => {
   try {
     const token = req.headers["x-access-token"];
@@ -196,4 +219,5 @@ module.exports = {
   signIn,
   isAuthenticated,
   getByToken,
+  AuthenticatedMiddleware,
 };

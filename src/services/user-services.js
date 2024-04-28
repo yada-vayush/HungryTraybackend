@@ -7,10 +7,9 @@ class UserService {
     this.userRepository = new UserRepository();
   }
   async create(data) {
-    const user = await this.userRepository.create(data);
-    return user;
-
     try {
+      const user = await this.userRepository.create(data);
+      return user;
     } catch (error) {
       console.log("====================================");
       console.log("Error occured in userService");
